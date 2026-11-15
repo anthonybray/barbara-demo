@@ -4,107 +4,121 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="description" content="Barbara — AI catalogue metadata engine for museums, archives and libraries. Turn millions of dateless images into findable, reviewable records." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <title>Barbara — make your collection findable</title>
 <style>
   :root{
-    --bg:#0d0e10; --bg2:#131418; --panel:#191b20; --panel2:#20232a;
-    --line:#24272f; --line2:#30343e;
-    --ink:#e9e7e1; --muted:#a0a4ad; --dim:#5f646e;
-    --gold:#c8a24a; --gold2:#dfc074; --gold-ink:#191303;
-    --ok:#4f9d6f; --serif:"Iowan Old Style",Georgia,Times,serif;
-    --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --bg:#050911; --bg2:#0b121b; --panel:#0d131c; --panel2:#141b26;
+    --line:#1f2733; --line2:#2b3543;
+    --ink:#e7ebf2; --muted:#b0b8c4; --dim:#67717f;
+    --accent:#bdf54a; --accent2:#41d9f8; --accent-ink:#0b1400;
+    --ok:#4fbf7d; --warn:#e0a83f; --bad:#e06a5f;
+    --display:"Space Grotesk","Segoe UI",system-ui,sans-serif;
+    --font:"Instrument Sans","Segoe UI",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
     font-family:var(--font);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
-  ::selection{background:rgba(200,162,74,.25)}
-  a{color:var(--gold2);text-decoration:none}
+  ::selection{background:rgba(189,245,74,.22)}
+  a{color:var(--accent2);text-decoration:none}
   a:hover{text-decoration:underline}
   .wrap{max-width:1120px;margin:0 auto;padding:0 26px}
-  section{padding:60px 0}
-  .kicker{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin:0 0 16px;font-weight:600}
-  h1,h2,h3{font-family:var(--serif);font-weight:700;letter-spacing:-.01em}
+  section{padding:72px 0}
+  .kicker{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 22px;font-weight:500}
+  h1,h2,h3{font-family:var(--display);font-weight:600;letter-spacing:-.015em}
 
-  header{border-bottom:1px solid var(--line);background:rgba(13,14,16,.9);
-    backdrop-filter:blur(8px);position:sticky;top:0;z-index:50}
+  header{border-bottom:1px solid var(--line);background:rgba(5,9,17,.82);
+    backdrop-filter:blur(10px);position:sticky;top:0;z-index:50}
   .nav{display:flex;align-items:center;gap:24px;height:66px}
   .logo{display:flex;align-items:baseline;gap:9px;margin-right:auto}
-  .logo .nm{font-family:var(--serif);font-size:24px;font-weight:700}
-  .logo .dot{color:var(--gold)}
-  .logo .tg{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+  .logo .nm{font-family:var(--display);font-size:23px;font-weight:700;letter-spacing:.01em}
+  .logo .dot{color:var(--accent)}
+  .logo .tg{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
   .nav a.l{color:var(--muted);font-size:14px}
   .nav a.l:hover{color:var(--ink);text-decoration:none}
   .btn{cursor:pointer;border:1px solid var(--line2);background:var(--panel2);color:var(--ink);
-    padding:11px 20px;border-radius:9px;font-size:14px;font-weight:600;font-family:var(--font);transition:.12s}
-  .btn:hover{border-color:var(--gold);color:var(--gold2)}
-  .btn-gold{background:var(--gold);border-color:var(--gold);color:var(--gold-ink)}
-  .btn-gold:hover{background:var(--gold2);color:var(--gold-ink)}
+    padding:11px 20px;border-radius:10px;font-size:14px;font-weight:600;font-family:var(--font);transition:.12s}
+  .btn:hover{border-color:var(--accent);color:var(--accent)}
+  .btn-accent{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+  .btn-accent:hover{background:#cdfa6b;color:var(--accent-ink);border-color:#cdfa6b}
   .btn-ghost{background:transparent}
   .btn-lg{padding:14px 26px;font-size:15px}
 
   .hero{padding:76px 0 52px;display:grid;grid-template-columns:1.08fr .92fr;gap:46px;align-items:center;
-    border-bottom:1px solid var(--line)}
+    border-bottom:1px solid var(--line);position:relative;overflow:hidden}
   @media(max-width:880px){.hero{grid-template-columns:1fr;padding:50px 0 38px}}
-  .hero h1{font-size:clamp(33px,4.7vw,50px);line-height:1.06;margin:0 0 22px}
-  .hero .lede{font-size:17px;color:var(--muted);max-width:560px;margin:0 0 30px}
+  .hero::before{content:"";position:absolute;top:-200px;right:-160px;width:560px;height:560px;
+    background:radial-gradient(circle,rgba(65,217,248,.12),transparent 70%);pointer-events:none}
+  .hero h1{font-size:clamp(33px,4.7vw,50px);line-height:1.04;margin:0 0 22px}
+  .hero h1 .hl{color:var(--accent)}
+  .hero .lede{font-size:16.5px;color:var(--muted);max-width:560px;margin:0 0 30px}
   .hero .lede b{color:var(--ink)}
   .ctas{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:22px}
-  .hero-note{font-size:13px;color:var(--dim)}
+  .hero-note{font-family:var(--mono);font-size:12px;color:var(--dim)}
   .hero-media{border-radius:18px;overflow:hidden;border:1px solid var(--line);position:relative;
-    box-shadow:0 24px 60px rgba(0,0,0,.5)}
-  .hero-media img{width:100%;max-height:420px;object-fit:cover;display:block;filter:saturate(.95)}
+    box-shadow:0 28px 70px rgba(0,0,0,.55)}
+  .hero-media img{width:100%;max-height:420px;object-fit:cover;display:block}
   .hero-media figcaption{position:absolute;left:0;right:0;bottom:0;padding:30px 18px 14px;
-    background:linear-gradient(transparent,rgba(0,0,0,.84));font-size:12.5px;color:#d5d2c8}
+    background:linear-gradient(transparent,rgba(5,9,17,.9));font-size:12.5px;color:#cbd2dd;
+    font-family:var(--font)}
   .hero-media figcaption b{color:#fff}
 
-  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;padding-top:4px}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding-top:4px}
   @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}}
-  .stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px}
-  .stat .n{font-family:var(--serif);font-size:28px;font-weight:700;color:var(--gold2)}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px;position:relative;overflow:hidden}
+  .stat::after{content:"";position:absolute;top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));opacity:.5}
+  .stat .n{font-family:var(--display);font-size:27px;font-weight:700;color:var(--accent)}
   .stat .l{font-size:12.5px;color:var(--muted);margin-top:4px}
 
   .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:6px}
   @media(max-width:840px){.steps{grid-template-columns:1fr}}
   .step{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:26px;position:relative}
-  .step .num{font-family:var(--serif);font-size:15px;color:var(--gold);font-weight:700;margin-bottom:12px;display:block}
+  .step:hover{border-color:var(--line2)}
+  .step .num{font-family:var(--mono);font-size:12px;color:var(--accent2);margin-bottom:14px;display:block;letter-spacing:.08em}
   .step h3{margin:0 0 8px;font-size:20px}
   .step p{margin:0;color:var(--muted);font-size:14px}
 
   .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:6px}
   @media(max-width:820px){.grid2{grid-template-columns:1fr}}
-  .pr{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:26px}
+  .pr{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:26px;position:relative;overflow:hidden}
+  .pr::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent)}
   .pr h3{margin:0 0 8px;font-size:19px}
   .pr p{margin:0;color:var(--muted);font-size:14px}
 
   .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px;margin-top:6px}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;
     display:flex;flex-direction:column;transition:.15s}
-  .card:hover{border-color:var(--line2);transform:translateY(-2px)}
+  .card:hover{border-color:var(--line2);transform:translateY(-2px);box-shadow:0 18px 44px rgba(0,0,0,.35)}
   .card .im{width:100%;height:210px;object-fit:cover;display:block;background:#000}
   .card .bd{padding:19px;display:flex;flex-direction:column;gap:10px;flex:1}
-  .card .ttl{font-family:var(--serif);font-size:18px;font-weight:700;line-height:1.25}
-  .card .en{font-size:12.5px;color:var(--dim)}
+  .card .ttl{font-family:var(--display);font-size:18px;font-weight:600;line-height:1.25}
+  .card .en{font-family:var(--mono);font-size:11px;color:var(--accent2);letter-spacing:.04em}
   .card .desc{font-size:13.5px;color:var(--muted)}
   .tags{display:flex;gap:6px;flex-wrap:wrap}
-  .tag{font-size:11.5px;color:var(--muted);background:var(--bg2);border:1px solid var(--line);padding:3px 9px;border-radius:6px}
-  .badge{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:999px}
-  .b-draft{background:rgba(200,135,58,.13);color:#ddb070}
-  .card .lic{font-size:10.5px;color:var(--dim);margin-top:auto;border-top:1px solid var(--line);padding-top:10px}
+  .tag{font-family:var(--mono);font-size:11px;color:var(--muted);background:var(--bg2);border:1px solid var(--line);padding:3px 9px;border-radius:6px;letter-spacing:.02em}
+  .card .lic{font-size:10.5px;color:var(--dim);margin-top:auto;border-top:1px solid var(--line);padding-top:10px;font-family:var(--mono)}
 
   .authpad{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start}
   @media(max-width:860px){.authpad{grid-template-columns:1fr}}
-  .authbox{background:var(--panel);border:1px solid var(--line2);border-radius:16px;padding:34px}
+  .authbox{background:var(--panel);border:1px solid var(--line2);border-radius:16px;padding:34px;position:relative;overflow:hidden}
+  .authbox::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,var(--accent),var(--accent2))}
   .authbox h2{margin:0 0 6px;font-size:24px}
   .authbox .sub{color:var(--muted);font-size:14px;margin:0 0 22px}
   .field{margin-bottom:16px}
-  .field label{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:7px;font-weight:600}
+  .field label{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:7px;font-weight:500}
   .field input{width:100%;background:var(--bg2);border:1px solid var(--line);color:var(--ink);
-    border-radius:8px;padding:12px 14px;font-size:14px;font-family:var(--font)}
-  .field input:focus{outline:none;border-color:var(--gold)}
+    border-radius:9px;padding:12px 14px;font-size:14px;font-family:var(--font)}
+  .field input:focus{outline:none;border-color:var(--accent)}
   .authbox .row{display:flex;align-items:center;justify-content:space-between;margin-top:18px}
   .authbox .tip{font-size:12px;color:var(--dim);margin-top:14px}
   .demo-list{display:flex;flex-direction:column;gap:10px}
-  .demo-row{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:15px;display:flex;gap:14px;align-items:center}
+  .demo-row{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;gap:14px;align-items:center;transition:.12s}
+  .demo-row:hover{border-color:var(--accent2)}
   .demo-row img{width:64px;height:48px;object-fit:cover;border-radius:7px;flex-shrink:0}
   .demo-row .t{font-size:13.5px;font-weight:600}
   .demo-row .s{font-size:11.5px;color:var(--dim)}
@@ -115,7 +129,7 @@
 
   #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--panel2);
     border:1px solid var(--line2);color:var(--ink);padding:12px 20px;border-radius:10px;
-    font-size:13.5px;box-shadow:0 8px 30px rgba(0,0,0,.45);z-index:100;opacity:0;pointer-events:none;transition:.25s;max-width:90vw}
+    font-size:13.5px;box-shadow:0 8px 30px rgba(0,0,0,.45);z-index:100;opacity:0;pointer-events:none;transition:.25s;max-width:90vw;font-family:var(--mono)}
   #toast.show{opacity:1}
 </style>
 </head>
@@ -133,16 +147,16 @@
 <section class="hero wrap">
   <div>
     <p class="kicker">For museums · archives · libraries</p>
-    <h1>Millions of dateless images. Now they can be found.</h1>
+    <h1><span class="hl">Millions of dateless images.</span><br>Now they can be found.</h1>
     <p class="lede"><b>Barbara</b> reads the digital images your collection already holds and proposes
       structured catalogue metadata — title, description, subjects — using only what each image shows.
       A cataloguer reviews and approves; approved records export cleanly to your collection system.
       No more invisible archives.</p>
     <div class="ctas">
-      <button class="btn btn-gold btn-lg" id="heroSignin">Sign in to the workshop</button>
+      <button class="btn btn-accent btn-lg" id="heroSignin">Sign in to the workshop</button>
       <a href="#showcase" class="btn btn-ghost btn-lg">See it describe real objects</a>
     </div>
-    <p class="hero-note">Works on the photos you already have — no re-scanning, no new hardware.</p>
+    <p class="hero-note">WORKS ON THE PHOTOS YOU ALREADY HAVE · NO RE-SCANNING</p>
   </div>
   <figure class="hero-media">
     <img src="assets/museum.webp" alt="A hand-coloured architectural print of a bed cornice design, 1804, London (public domain)">
@@ -162,11 +176,11 @@
 <section class="wrap" id="how">
   <p class="kicker">How Barbara works</p>
   <div class="steps">
-    <div class="step"><span class="num">01</span><h3>It looks</h3>
+    <div class="step"><span class="num">01 / IT LOOKS</span><h3>It looks</h3>
       <p>Load a batch of images. Barbara analyses each one and proposes structured metadata in the fields your catalogue needs.</p></div>
-    <div class="step"><span class="num">02</span><h3>You judge</h3>
+    <div class="step"><span class="num">02 / YOU JUDGE</span><h3>You judge</h3>
       <p>Each proposal is a draft. A cataloguer corrects, notes and approves — nothing ships without a human in the loop.</p></div>
-    <div class="step"><span class="num">03</span><h3>It exports</h3>
+    <div class="step"><span class="num">03 / IT EXPORTS</span><h3>It exports</h3>
       <p>Approved records export as a clean CSV, ready to import into your collection, archive or publishing system.</p></div>
   </div>
 </section>
@@ -198,7 +212,7 @@
       <div class="field"><label>Password</label>
         <input type="password" id="pass" placeholder="••••••••" autocomplete="current-password"></div>
       <div class="row">
-        <button class="btn btn-gold" id="signinBtn">Enter the workshop</button>
+        <button class="btn btn-accent" id="signinBtn">Enter the workshop</button>
         <a href="#how" style="font-size:13px">Why sign in?</a>
       </div>
       <p class="tip">Demo login: no account is created, nothing is stored on a server. Records you create live in your browser, so you can try the full describe → review → export flow without touching real collection data.</p>
@@ -226,18 +240,18 @@
 
 <script>
 var RECORDS = [
-  {img:"assets/railway.webp",title:"Antrea railway station",en:"photograph · Antrea",
+  {img:"assets/railway.webp",title:"Antrea railway station",en:"PHOTOGRAPH · ANTREA",
    desc:"Crowds on the platform outside a wooden station building, early 1900s postcard.",
-   tags:["railway stations","platforms","passengers","wooden buildings","postcards"],lic:"Public domain"},
-  {img:"assets/map.webp",title:"Engraved view of Castellum Clissae, Dalmatia",en:"engraving · 1596 · Clissa",
+   tags:["railway stations","platforms","passengers","wooden buildings","postcards"],lic:"PUBLIC DOMAIN"},
+  {img:"assets/map.webp",title:"Engraved view of Castellum Clissae, Dalmatia",en:"ENGRAVING · 1596 · CLISSA",
    desc:"A 1596 engraved pictorial map of the fortress of Clissa in Dalmatia, with cartouche and coastal scenes.",
-   tags:["engraving","pictorial map","fortress","Clissa","Adriatic Sea"],lic:"Public domain"},
-  {img:"assets/museum.webp",title:"Two designs for bed cornices, London",en:"hand-coloured print · 1 Dec 1804 · London",
+   tags:["engraving","pictorial map","fortress","Clissa","Adriatic Sea"],lic:"PUBLIC DOMAIN"},
+  {img:"assets/museum.webp",title:"Two designs for bed cornices, London",en:"HAND-COLOURED PRINT · 1 DEC 1804 · LONDON",
    desc:"Tradesman's sample sheet of two bed-cornice designs with drapery, tassels and fringe, hand-coloured.",
-   tags:["bed cornices","drapery","interior decoration","prints","1804"],lic:"Public domain"},
-  {img:"assets/street.webp",title:"19th-century shopfront, Bridge Street, Crickhowell",en:"photograph",
+   tags:["bed cornices","drapery","interior decoration","prints","1804"],lic:"PUBLIC DOMAIN"},
+  {img:"assets/street.webp",title:"19th-century shopfront, Bridge Street, Crickhowell",en:"PHOTOGRAPH",
    desc:"A preserved 19th-century shopfront on Bridge Street with bay windows and a doorway.",
-   tags:["shopfronts","bay windows","townscape","Crickhowell","architecture"],lic:"CC BY-SA 2.0 © geograph.org.uk"}
+   tags:["shopfronts","bay windows","townscape","Crickhowell","architecture"],lic:"CC BY-SA 2.0 · GEOGRAPH.ORG.UK"}
 ];
 var cards=document.getElementById("cards");
 RECORDS.forEach(function(r){
