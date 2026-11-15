@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Barbara workshop — review and approve AI-generated catalogue metadata." />
+<title>Barbara — workshop</title>
+<style>
+  :root{
+    --bg:#0d0e10; --bg2:#131418; --panel:#191b20; --panel2:#20232a;
+    --line:#24272f; --line2:#30343e;
+    --ink:#e9e7e1; --muted:#a0a4ad; --dim:#5f646e;
+    --gold:#c8a24a; --gold2:#dfc074; --gold-ink:#191303;
+    --ok:#4f9d6f; --warn:#c8873a; --bad:#c96057;
+    --serif:"Iowan Old Style",Georgia,Times,serif;
+    --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font-family:var(--font);font-size:14.5px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  ::selection{background:rgba(200,162,74,.25)}
+  a{color:var(--gold2);text-decoration:none}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 26px}
+  header{border-bottom:1px solid var(--line);background:#0d0e10;position:sticky;top:0;z-index:50}
+  .bar{display:flex;align-items:center;gap:16px;height:62px}
+  .logo{font-family:var(--serif);font-size:22px;font-weight:700;margin-right:auto}
+  .logo .dot{color:var(--gold)}
+  .who{font-size:13px;color:var(--muted)}
+  .who b{color:var(--ink)}
+  .btn{cursor:pointer;border:1px solid var(--line2);background:var(--panel2);color:var(--ink);
+    padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;font-family:var(--font);transition:.12s}
+  .btn:hover{border-color:var(--gold);color:var(--gold2)}
+  .btn-gold{background:var(--gold);border-color:var(--gold);color:var(--gold-ink)}
+  .btn-gold:hover{background:var(--gold2);color:var(--gold-ink)}
+  .btn-ghost{background:transparent}
+  .btn:disabled{opacity:.45;cursor:not-allowed;pointer-events:none}
+
+  .banner{background:rgba(200,162,74,.08);border-bottom:1px solid var(--line2);font-size:12.5px;color:var(--muted);padding:9px 0}
+  .banner .wrap{display:flex;align-items:center;gap:10px}
+  .banner b{color:var(--gold2)}
+
+  .ws{display:grid;grid-template-columns:330px 1fr;gap:22px;padding:24px 0 70px;align-items:start}
+  @media(max-width:880px){.ws{grid-template-columns:1fr}}
+
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .panel .ph{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+  .panel .ph h3{margin:0;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .panel .ph .n{color:var(--dim);font-size:12px}
+  .ph .spacer{flex:1}
+  .list{max-height:560px;overflow:auto}
+  .row{display:flex;flex-direction:column;gap:7px;padding:13px 16px;border-bottom:1px solid var(--line);cursor:pointer}
+  .row:hover{background:var(--panel2)}
+  .row.sel{background:rgba(200,162,74,.08);border-left:2px solid var(--gold)}
+  .row .top{display:flex;align-items:center;gap:10px}
+  .row img{width:52px;height:40px;object-fit:cover;border-radius:6px;background:var(--bg2);border:1px solid var(--line);flex-shrink:0}
+  .row .nm{flex:1;font-size:13.5px;font-weight:600;line-height:1.3}
+  .badge{font-size:10px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;padding:2px 8px;border-radius:999px;flex-shrink:0}
+  .b-draft{background:rgba(200,135,58,.13);color:#ddb070}
+  .b-approved{background:rgba(79,157,111,.16);color:var(--ok)}
+  .row .meta{font-size:11.5px;color:var(--dim)}
+
+  .detail .du{width:100%;max-height:360px;object-fit:contain;display:block;background:#000}
+  .dbody{padding:22px;display:flex;flex-direction:column;gap:14px}
+  .dhead{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .dhead h2{margin:0;font-family:var(--serif);font-size:22px;font-weight:700;flex:1;min-width:200px}
+  .conf{font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:6px;font-weight:700}
+  .c-high{background:rgba(79,157,111,.16);color:var(--ok)}
+  .f{display:flex;flex-direction:column;gap:5px}
+  .f label{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);font-weight:600}
+  .f input,.f textarea{width:100%;background:var(--bg2);border:1px solid var(--line);color:var(--ink);
+    border-radius:8px;padding:10px 12px;font-size:13.5px;font-family:var(--font);resize:vertical}
+  .f input:focus,.f textarea:focus{outline:none;border-color:var(--gold)}
+  .f textarea{min-height:70px}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:640px){.g2{grid-template-columns:1fr}}
+  .subj{display:flex;flex-wrap:wrap;gap:6px}
+  .tag{background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:3px 10px;font-size:12px;color:var(--ink);display:inline-flex;align-items:center;gap:6px}
+  .tag .rm{color:var(--dim);cursor:pointer}
+  .tag .rm:hover{color:var(--bad)}
+  .ev{font-size:12.5px;color:var(--muted);background:var(--bg2);border-left:2px solid var(--gold);padding:10px 12px;border-radius:0 8px 8px 0}
+  .warnbox{border:1px solid rgba(200,135,58,.4);background:rgba(200,135,58,.07);border-radius:8px;padding:10px 12px;font-size:12.5px;color:var(--warn)}
+  .warnbox .t{font-weight:600;margin-bottom:4px}
+  .acts{display:flex;gap:10px;align-items:center;margin-top:4px;flex-wrap:wrap}
+  .hint{font-size:12px;color:var(--ok)}
+  .upload{background:var(--panel2);border:1.5px dashed var(--line2);border-radius:12px;padding:16px;text-align:center;font-size:12.5px;color:var(--dim)}
+  .upload b{color:var(--ink)}
+
+  .foot{border-top:1px solid var(--line);padding:22px 0 40px;color:var(--dim);font-size:12px}
+  .foot .row{display:flex;gap:20px;flex-wrap:wrap;align-items:center}
+  #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--panel2);
+    border:1px solid var(--line2);color:var(--ink);padding:12px 20px;border-radius:10px;font-size:13.5px;
+    box-shadow:0 8px 30px rgba(0,0,0,.45);z-index:100;opacity:0;pointer-events:none;transition:.25s;max-width:90vw}
+  #toast.show{opacity:1}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap bar">
+    <div class="logo">Barbara<span class="dot">.</span></div>
+    <span class="who"><b id="whoName">Cataloguer</b> · workshop</span>
+    <button class="btn" id="logout">Sign out</button>
+  </div>
+</header>
+
+<div class="banner"><div class="wrap"><b>Demo workshop.</b> These real public-domain records were described by Barbara. Try the review → approve → export flow — everything lives in your browser for this session.</div></div>
+
+<main class="wrap ws">
+  <aside class="panel">
+    <div class="ph"><h3>Records</h3><span class="n" id="recCount"></span><span class="spacer"></span>
+      <button class="btn btn-gold" id="exportCSV" style="padding:6px 12px;font-size:12px">Export CSV</button>
+      <button class="btn btn-ghost" id="refresh" style="padding:6px 10px;font-size:12px">↻</button></div>
+    <div class="list" id="list"></div>
+  </aside>
+
+  <section class="panel detail">
+    <div class="dbody" id="dbody">
+      <div class="dhead"><h2>Select a record to review</h2></div>
+      <div class="upload"><b>Describe a new object:</b> the live AI describe runs on the owner's protected
+        machine (it uses their account). On this public demo you review and export the sample records shown.
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap row">
+    <span>Barbara workshop · demo build</span>
+    <span>Sample records: real public-domain / freely licensed images from Wikimedia Commons, described by Barbara (Grok vision).</span>
+  </div>
+</footer>
+
+<div id="toast"></div>
+
+<script>
+var SEED = [
+  {img:"assets/railway.webp",title:"Antrea railway station",object_type:"photograph",date:"",location:"Antrea, Finland",
+   desc:"Crowds gathered on the platform outside a wooden railway station building, early 1900s postcard view.",
+   subjects:["railway stations","platforms","passengers","wooden buildings","postcards"],
+   confidence:"high",evidence:"Visible station building, platform and period crowd; 'Antrea' named in printed caption on the card.",
+   warnings:[],status:"DRAFT",review_notes:""},
+  {img:"assets/map.webp",title:"Engraved view of Castellum Clissae, Dalmatia",object_type:"engraving",date:"1596",location:"Clissa, Dalmatia",
+   desc:"A 1596 engraved pictorial map of the fortress of Clissa in Dalmatia, with cartouche, coastal and landscape scenes.",
+   subjects:["engraving","pictorial map","fortress","Clissa","Adriatic Sea"],
+   confidence:"high",evidence:"Dated '1596' within the engraving and place name Clissa appear in the plate.",
+   warnings:[],status:"DRAFT",review_notes:""},
+  {img:"assets/museum.webp",title:"Two designs for bed cornices, London",object_type:"hand-coloured print",date:"1 December 1804",location:"London",
+   desc:"A tradesman's sample sheet of two bed-cornice designs with drapery, tassels and fringe, hand-coloured.",
+   subjects:["bed cornices","drapery","interior decoration","prints","1804","London"],
+   confidence:"high",evidence:"Printed date '1 December 1804' and London imprint are legible on the sheet.",
+   warnings:[],status:"DRAFT",review_notes:""},
+  {img:"assets/street.webp",title:"19th-century shopfront, Bridge Street, Crickhowell",object_type:"photograph",date:"",location:"Crickhowell",
+   desc:"A preserved 19th-century shopfront on Bridge Street with a doorway and bay windows.",
+   subjects:["shopfronts","bay windows","townscape","Crickhowell","architecture"],
+   confidence:"medium",evidence:"Street visible; location per source attribution, photographic date not shown.",
+   warnings:["Photographic date not visible in image — left blank."],status:"DRAFT",review_notes:""}
+];
+
+function loadState(){
+  var s=localStorage.getItem("barbara_records");return s?JSON.parse(s):JSON.parse(JSON.stringify(SEED));
+}
+function saveState(r){localStorage.setItem("barbara_records",JSON.stringify(r));}
+var RECS=loadState(), sel=null, toastTimer;
+
+function who(){try{return JSON.parse(sessionStorage.getItem("barbara_user")||"null")}catch(_){return null}}
+function init(){var u=who();
+  if(!u){localStorage.removeItem("barbara_records");window.location.replace("index.html");return}
+  document.getElementById("whoName").textContent=u.name||u.email.split("@")[0];
+  renderList();renderDetail();}
+function toast(m){var t=document.getElementById("toast");t.textContent=m;t.classList.add("show");
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),3000);}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function badge(s){return s==="APPROVED"?'<span class="badge b-approved">Approved</span>':'<span class="badge b-draft">Draft</span>';}
+
+function renderList(){
+  var el=document.getElementById("list");
+  var app=RECS.filter(r=>r.status==="APPROVED").length;
+  document.getElementById("recCount").textContent=RECS.length+" · "+app+" approved";
+  if(!RECS.length){el.innerHTML='<div style="padding:26px 16px;color:var(--dim);font-size:13px;text-align:center">No records.</div>';return}
+  el.innerHTML=RECS.map(r=>{
+    var m=r.object_type+(r.date?" · "+r.date:"")+(r.location?" · "+r.location:"");
+    return '<div class="row '+(r===sel||(sel&&r.title===sel.title)?"sel":"")+'" data-i="'+RECS.indexOf(r)+'">'+
+      '<div class="top"><img src="'+r.img+'" alt=""><div class="nm">'+esc(r.title)+'</div>'+badge(r.status)+'</div>'+
+      '<div class="meta">'+esc(m)+'</div></div>';}).join("");
+  el.querySelectorAll(".row").forEach(r=>r.addEventListener("click",()=>{
+    sel=RECS[+r.dataset.i];renderList();renderDetail();}));
+}
+function renderDetail(){
+  var b=document.getElementById("dbody");
+  if(!sel){b.innerHTML='<div class="dhead"><h2>Select a record to review</h2></div>'+
+    '<div class="upload"><b>Describe a new object:</b> the live AI describe runs on the owner\u2019s protected machine. On this public demo you review and export the sample records shown.</div>';return}
+  var cc="c-"+String(sel.confidence||"medium").toLowerCase();
+  var tags=(sel.subjects||[]).map((t,i)=>'<span class="tag">'+esc(t)+'<span class="rm" data-i="'+i+'">\u00d7</span></span>').join("");
+  b.innerHTML=
+    '<div class="dhead"><h2 contenteditable="true" data-f="title">'+esc(sel.title||"")+'</h2>'+
+    '<span class="conf '+cc+'">'+esc(sel.confidence||"")+'</span>'+badge(sel.status)+'</div>'+
+    (sel.img?'<img class="du" src="'+sel.img+'" alt="">':'')+
+    '<div class="f"><label>Description</label><textarea data-f="desc">'+esc(sel.desc||"")+'</textarea></div>'+
+    '<div class="f"><label>Subject terms</label><div class="subj">'+tags+'</div></div>'+
+    '<div class="g2"><div class="f"><label>Date</label><input data-f="date" value="'+esc(sel.date||"")+'"></div>'+
+    '<div class="f"><label>Location</label><input data-f="location" value="'+esc(sel.location||"")+'"></div></div>'+
+    '<div class="f"><label>Object type</label><input data-f="object_type" value="'+esc(sel.object_type||"")+'"></div>'+
+    '<div class="f"><label>Review note</label><textarea data-f="review_notes">'+esc(sel.review_notes||"")+'</textarea></div>'+
+    (sel.evidence?'<div class="ev"><b style="color:var(--gold)">Evidence \u00b7</b> '+esc(sel.evidence)+'</div>':'')+
+    (sel.warnings&&sel.warnings.length?'<div class="warnbox"><div class="t">Flagged for review</div>'+sel.warnings.map(w=>"\u2022 "+esc(w)+"<br>").join("")+'</div>':'')+
+    '<div class="acts"><button class="btn btn-gold" data-act="approve" '+((sel.status||"")==="APPROVED"?"disabled":"")+'>'+((sel.status||"")==="APPROVED"?"Approved \u2713":"Approve record")+'</button>'+
+    '<button class="btn" data-act="save">Save draft</button>'+
+    '<span class="hint" id="hint" style="display:none">Saved \u2713</span></div>';
+
+  b.querySelectorAll(".tag .rm").forEach(x=>x.addEventListener("click",()=>{
+    sel.subjects.splice(+x.dataset.i,1);renderDetail();saveState(RECS);}));
+  b.querySelector('[data-act="approve"]').addEventListener("click",()=>commit("approve"));
+  b.querySelector('[data-act="save"]').addEventListener("click",()=>commit("save"));
+}
+function readFields(){
+  var b=document.getElementById("dbody");
+  var g=f=>b.querySelector('[data-f="'+f+'"]');
+  sel.title=(g("title")&&g("title").innerText)||sel.title;
+  sel.desc=(g("desc")&&g("desc").value)||sel.desc;
+  sel.date=(g("date")&&g("date").value)||sel.date;
+  sel.location=(g("location")&&g("location").value)||sel.location;
+  sel.object_type=(g("object_type")&&g("object_type").value)||sel.object_type;
+  sel.review_notes=(g("review_notes")&&g("review_notes").value)||sel.review_notes;
+}
+function commit(mode){readFields();
+  if(mode==="approve")sel.status="APPROVED";
+  saveState(RECS);renderList();renderDetail();
+  var h=document.getElementById("hint");if(h){h.style.display="inline";setTimeout(()=>h.style.display="none",1600);}
+  toast(mode==="approve"?"Record approved \u2713":"Draft saved \u2713");}
+
+function exportCSV(){
+  var approved=RECS.filter(r=>r.status==="APPROVED");
+  if(!approved.length){toast("Approve at least one record before exporting.");return}
+  var head=["title","description","subject_terms","date","location","object_type","confidence","status"];
+  var csv=head.join(",")+"\n"+approved.map(r=>[r.title,'"'+String(r.desc).replace(/"/g,'""')+'"',
+    (r.subjects||[]).join("; "),r.date,r.location,r.object_type,r.confidence,r.status].join(",")).join("\n");
+  var a=document.createElement("a");a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(csv);
+  a.download="barbara-export.csv";document.body.appendChild(a);a.click();a.remove();
+  toast("Exported "+approved.length+" approved record(s).");
+}
+
+document.getElementById("refresh").addEventListener("click",()=>{RECS=loadState();renderList();renderDetail();toast("Refreshed")});
+document.getElementById("logout").addEventListener("click",()=>{sessionStorage.removeItem("barbara_user");window.location.replace("index.html")});
+document.getElementById("exportCSV").addEventListener("click",exportCSV);
+init();
+</script>
+</body>
+</html>
